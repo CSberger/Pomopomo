@@ -22,11 +22,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 5432, host: 54322
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.2.1"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -94,7 +94,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.cookbooks_path = "cookbooks"
 
       chef.add_recipe "apt"
-
+      chef.add_recipe "postgresql"
+      chef.add_recipe "postgresql::server"
 #      chef.add_recipe "build-essential"
 #      chef.add_recipe "git"
 #      chef.add_recipe "emacs"
@@ -105,6 +106,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   # You may also specify custom JSON attributes:
   #   chef.json = { mysql_password: "foo" }
+  chef.json = {
+      postgresql: {
+        config: {
+          ssl: false,
+          listen_addresses: '*'
+        },
+        password: {
+          postgres: 'postgres'
+        }
+      }
+    }
    end
 
   # Enable provisioning with chef server, specifying the chef server URL,

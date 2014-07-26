@@ -8,7 +8,7 @@ apt-get install curl -y
 curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
 python3.4 get-pip.py
 python3.4 -m venv ~/venv
-source ~/venv/activate
+source ~/venv/bin/activate
 pip3.4 install -r /vagrant/pip-requirements.txt
 pip3.4 install https://www.djangoproject.com/download/1.7c1/tarball/
 deactivate
