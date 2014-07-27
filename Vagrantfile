@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.2.1"
+  config.vm.network "private_network", ip: "192.168.2.2"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -106,16 +106,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   # You may also specify custom JSON attributes:
   #   chef.json = { mysql_password: "foo" }
+
   chef.json = {
       postgresql: {
-        config: {
-          ssl: false,
-          listen_addresses: '*'
-        },
-        password: {
-          postgres: 'postgres'
+          pg_hba: [
+              {type: 'host', db: 'all', user: 'all', addr: '::1/128', method: 'trust'}
+          ],
+          config: {
+              ssl: false,
+              listen_addresses: '*'
+          },
+          password: {
+            postgres: 'postgres'
+          }
         }
-      }
     }
    end
 
